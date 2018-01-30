@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4682B4"
+    android:padding="20dp"
+    tools:context="com.example.akshay.akshay5.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="User Registration Form"
+        android:textColor="#fff"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/editTextF_Name"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#fbfefd"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter Your First Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editTextL_Name"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/editTextF_Name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#fbfefd"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter Your Last Name"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/editTextL_Name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#fbfefd"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter Your Email"
+        android:inputType="textEmailAddress" />
+
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/editTextEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#fbfefd"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Enter Your Password"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/Submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Register" />
+
+    <Button
+        android:id="@+id/Login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Submit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Already Register | Log In Here" />
+
+
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/Login"
+        android:layout_marginTop="18dp" />
+
+
+</RelativeLayout>
