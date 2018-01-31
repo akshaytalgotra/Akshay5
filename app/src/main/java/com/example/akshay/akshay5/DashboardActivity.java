@@ -4,68 +4,6 @@ package com.example.akshay.akshay5;
  * Created by AKSHAY on 25-01-2018.
  */
 
-
-
-
-  /*      import android.content.Intent;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.TextView;
-        import android.widget.Toast;
-
-public class DashboardActivity extends AppCompatActivity {
-
-    Button LogOut;
-    TextView EmailShow;
-    String EmailHolder;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-
-        //twitter username fetching
-
-        String username = getIntent().getStringExtra("username");
-        TextView uname = findViewById(R.id.textView2);
-        uname.setText(username);
-
-
-
-        LogOut = (Button)findViewById(R.id.button);
-        EmailShow = (TextView)findViewById(R.id.EmailShow);
-
-
-        Intent intent = getIntent();
-        EmailHolder = intent.getStringExtra(UserLoginActivity.UserEmail);
-        EmailShow.setText(EmailHolder);
-
-
-        LogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                finish();
-
-                Intent intent = new Intent(DashboardActivity.this, UserLoginActivity.class);
-
-                startActivity(intent);
-
-                Toast.makeText(DashboardActivity.this, "Log Out Successfully", Toast.LENGTH_LONG).show();
-
-
-            }
-        });
-    }
-}
-
-
-
-
-/*public class DashboardActivity {
-} */
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -103,14 +41,6 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-/*     import com.twitter.sdk.android.core.Result;
-          import com.twitter.sdk.android.core.TwitterApiClient;
-          import com.twitter.sdk.android.core.TwitterCore;
-          import com.twitter.sdk.android.core.TwitterException;
-          import com.twitter.sdk.android.core.TwitterSession;
-          import com.twitter.sdk.android.core.models.Tweet;
-          import com.twitter.sdk.android.core.services.StatusesService;
-          import com.twitter.sdk.android.tweetcomposer.ComposerActivity;    */
 
 
 public class DashboardActivity extends AppCompatActivity {
