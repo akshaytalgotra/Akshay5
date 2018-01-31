@@ -58,7 +58,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     String GetImageNameFromEditText;
 
-    String GetTweetDataFromEditText;
+    String GetTweetDataFromEditText;   //variable to store text which user want to tweet
 
     String ImageNameFieldOnServer = "image_name";
 
@@ -68,7 +68,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     String username;
 
-    //FT
+    //Fetching Tweets
     Button click;
 
 
@@ -151,11 +151,19 @@ public class DashboardActivity extends AppCompatActivity {
 
 
     public void shareUsingTwitterNativeComposer(View view) {
-        //  Intent browseIntent = new Intent(Intent.ACTION_VIEW,Uri.parse("https://arty-crafty-radiato.000webhostapp.com/twitterapi/index.php"));
-        //  startActivity(browseIntent);
-        GetTweetDataFromEditText = tweetText.getText().toString();
-        TweetComposer.Builder builder = new TweetComposer.Builder(this).text(GetTweetDataFromEditText);
-        builder.show();
+        
+        GetTweetDataFromEditText = tweetText.getText().toString();   //converting to string
+     
+        final TwitterSession session = TwitterCore.getInstance().getSessionManager()
+                .getActiveSession();
+        final Intent intent = new ComposerActivity.Builder(DashboardActivity.this)
+                .session(session)
+                .text(GetTweetDataFromEditText)
+                .hashtags("#twitter")
+                .darkTheme()
+                .createIntent();
+        startActivity(intent);
+
 
     }
 
