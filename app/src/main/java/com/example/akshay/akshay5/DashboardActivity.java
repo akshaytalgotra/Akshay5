@@ -187,7 +187,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     // Start activity for result method to Set captured image on image view after click.
     // Uri filePath;
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -207,6 +207,38 @@ public class DashboardActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ImageViewHolder.setImageBitmap(imageBitmap);
 
+        }
+    }  */
+    
+     Uri filePath;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+            filePath = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                ImageViewHolder.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+          if (requestCode == 7 && resultCode == RESULT_OK) {
+            filePath = data.getData();
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageViewHolder.setImageBitmap(imageBitmap);
+
+
+            // Create a file n then get Object of URI
+            try {
+                filePath=   createFileFromBitmap(imageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+                filePath=null;
+                Log.e(getClass().getName(), "onActivityResult: some problem occur to getting URI   "+e.getMessage());
+            }
         }
     }
 
