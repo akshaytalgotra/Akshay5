@@ -149,6 +149,24 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
+    //FUNCTION ADDED RECENTLY
+     private Uri createFileFromBitmap(Bitmap bitmap) throws IOException {
+        String name = "image:";
+        File f = new File(getCacheDir(), name + System.currentTimeMillis()+ ".jpg");
+        f.createNewFile();
+
+    //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+    //write the bytes in file
+        FileOutputStream fos = new FileOutputStream(f);
+        fos.write(bitmapdata);
+        fos.flush();
+        fos.close();
+        return Uri.fromFile(f);
+    }
 
     public void shareUsingTwitterNativeComposer(View view) {
         
