@@ -132,8 +132,3 @@ public class UserLoginActivity extends AppCompatActivity {
     }
 
 }
-
-
-
-/*public class UserLoginActivity {
-} */
