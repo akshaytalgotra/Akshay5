@@ -4,6 +4,7 @@ package com.example.akshay.akshay5;
  * Created by AKSHAY on 25-01-2018.
  */
 
+
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,21 +14,25 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -40,6 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
+
 
 
 
@@ -58,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     String GetImageNameFromEditText;
 
-    String GetTweetDataFromEditText;   //variable to store text which user want to tweet
+    String GetTweetDataFromEditText;
 
     String ImageNameFieldOnServer = "image_name";
 
@@ -68,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     String username;
 
-    //Fetching Tweets
+    //FT
     Button click;
 
 
@@ -126,6 +132,11 @@ public class DashboardActivity extends AppCompatActivity {
                 FetchDataActivity process = new FetchDataActivity();
                 process.execute();
 
+                // Setting image as transparent after done uploading.
+                ImageViewHolder.setImageResource(android.R.color.transparent);
+                imageName.setText("");
+
+
 
             }
         });
@@ -149,18 +160,36 @@ public class DashboardActivity extends AppCompatActivity {
 
     }
 
-    //FUNCTION ADDED RECENTLY
-     private Uri createFileFromBitmap(Bitmap bitmap) throws IOException {
+
+    public void shareUsingTwitterNativeComposer(View view) {
+
+        GetTweetDataFromEditText = tweetText.getText().toString();
+       /* TweetComposer.Builder builder = new TweetComposer.Builder(this).text(GetTweetDataFromEditText);
+        builder.show(); */
+        final TwitterSession session = TwitterCore.getInstance().getSessionManager()
+                .getActiveSession();
+        final Intent intent = new ComposerActivity.Builder(DashboardActivity.this)
+                .session(session)
+                .image(filePath)
+                .text(GetTweetDataFromEditText)
+                .hashtags("#twitter")
+                .createIntent();
+        startActivity(intent);
+        Toast.makeText(DashboardActivity.this, "Click On Tweet", Toast.LENGTH_LONG).show();
+
+    }
+
+    private Uri createFileFromBitmap(Bitmap bitmap) throws IOException {
         String name = "image:";
         File f = new File(getCacheDir(), name + System.currentTimeMillis()+ ".jpg");
         f.createNewFile();
 
-    //Convert bitmap to byte array
+//Convert bitmap to byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
         byte[] bitmapdata = bos.toByteArray();
 
-    //write the bytes in file
+//write the bytes in file
         FileOutputStream fos = new FileOutputStream(f);
         fos.write(bitmapdata);
         fos.flush();
@@ -168,62 +197,21 @@ public class DashboardActivity extends AppCompatActivity {
         return Uri.fromFile(f);
     }
 
-    public void shareUsingTwitterNativeComposer(View view) {
-        
-        GetTweetDataFromEditText = tweetText.getText().toString();   //converting to string
-     
-        final TwitterSession session = TwitterCore.getInstance().getSessionManager()
-                .getActiveSession();
-        final Intent intent = new ComposerActivity.Builder(DashboardActivity.this)
-                .session(session)
-                .text(GetTweetDataFromEditText)
-                .hashtags("#twitter")
-                .darkTheme()
-                .createIntent();
-        startActivity(intent);
 
-
-    }
-
-    // Start activity for result method to Set captured image on image view after click.
-    // Uri filePath;
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Uri filePath;
-        if (requestCode == 7 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePath = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                ImageViewHolder.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else if (requestCode == 7 && resultCode == RESULT_OK) {
-            filePath = data.getData();
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ImageViewHolder.setImageBitmap(imageBitmap);
-
-        }
-    }  */
-    
-     Uri filePath;
+    Uri filePath;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-            filePath = data.getData();
+          /*  filePath = data.getData();
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 ImageViewHolder.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } */
           if (requestCode == 7 && resultCode == RESULT_OK) {
             filePath = data.getData();
             Bundle extras = data.getExtras();
@@ -243,80 +231,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * method to share picked/capture image with text using Twitter Native Composer
-     * NOTE : For this you should authenticate user before sharing image as the builder required TwitterSession.
-     * It does not depend on the Twitter for Android app being installed.
-     *
-     * @param view
-     */
- /*   public void shareUsingTwitterNativeComposer(View view) {
-        //check if user has picked/captured image or not
-        if (filePath != null) {
-            TwitterSession session = TwitterCore.getInstance().getSessionManager()
-                    .getActiveSession();//get the active session
-            if (session != null) {
-                //if active session is not null start sharing image
-                shareUsingNativeComposer(session);
-            }  else {
-                //if there is no active session then ask user to authenticate
-                //authenticateUser();
-                login();
-            }
-        } else {
-            //if not then show dialog to pick/capture image
-            Toast.makeText(this, "Please select image first to share.", Toast.LENGTH_SHORT).show();
-            EnableRuntimePermissionToAccessCamera();
-        }
-    }
-*/
 
-    /**
-     * method to share image using Twitter Native Kit composer
-     *
-     * @param session of the authenticated user
-    put comment here!
-    private void shareUsingNativeComposer(TwitterSession session) {
-    Intent intent = new ComposerActivity.Builder(this)
-    .session(session)//Set the TwitterSession of the User to Tweet
-    .image(filePath)//Attach an image to the Tweet
-    .text("This is Native Kit Composer Tweet!!")//Text to prefill in composer
-    .hashtags("#android")//Hashtags to prefill in composer
-    .createIntent();//finally create intent
-    startActivity(intent);
-    }   */
-
-    /**
-     * method call to authenticate user
-     */
-
-
-
- /*  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        Uri uri;
-        if (requestCode == 7 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            uri = data.getData();
-
-
-
-            try {
-
-                // Adding captured image in bitmap.
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
-                // adding captured image in imageview.
-                ImageViewHolder.setImageBitmap(bitmap);
-
-            } catch (IOException e) {
-
-                e.printStackTrace();
-            }
-        }
-
-    } */
 
     // Requesting runtime permission to access camera.
     public void EnableRuntimePermissionToAccessCamera() {
@@ -375,9 +290,6 @@ public class DashboardActivity extends AppCompatActivity {
                 // Printing uploading success message coming from server on android app.
                 Toast.makeText(DashboardActivity.this, string1, Toast.LENGTH_LONG).show();
 
-                // Setting image as transparent after done uploading.
-                ImageViewHolder.setImageResource(android.R.color.transparent);
-                imageName.setText("");
 
             }
 
